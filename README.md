@@ -1,18 +1,25 @@
 # The Infinite One-Shot Machine
 
-Version: v0.26.05.30.0002
+Version: v0.26.05.30.0003
+Stage: 1D — Component Editor & Library Management
 
-Stage 0/1 GitHub Pages prototype for the Virtual DM project.
+## Included
+- Stage 0 foundation remains complete
+- Stage 1A component database
+- Stage 1B adventure assembly
+- Stage 1C host-only secrets
+- Stage 1D component editor and library management
 
-## This patch adds
+## New in this build
+- Add/edit/delete adventure components
+- Search/filter component lists
+- Component library statistics
+- Local library persistence
+- Export component library JSON
+- Import component library JSON
+- Reset library to defaults
+- Importer placeholder can add rough candidates into the editable library
 
-- Stage 1A component database with hooks, villains, locations, encounters, NPCs, factions, clues, secrets, twists, rewards, complications, and finales.
-- Stage 1B structured one-shot assembly with opening, investigation, danger, false answer, complication, revelation, and finale.
-- Stage 1C host-only secret panel, clue guidance, scene selection, resolved scene tracking, narration, and session log.
-- Local save/load and JSON export.
-- Stage 2 importer placeholder for future URL/PDF/text ingestion.
-- Build health panel aligned to the Project Bible.
-
-## Upload
-
-Upload `index.html` and this `README.md` to the root of the GitHub repo and keep GitHub Pages enabled.
+## Upload Instructions
+Upload `index.html` and this `README.md` to the root of the GitHub repository.
+GitHub Pages should update automatically if Pages is already enabled.
