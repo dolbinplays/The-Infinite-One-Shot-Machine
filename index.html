@@ -5,375 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Infinite One-Shot Machine</title>
   <style>
-    :root {
-      --bg: #0d1020;
-      --panel: rgba(25, 31, 56, 0.92);
-      --panel2: rgba(36, 43, 78, 0.92);
-      --ink: #f3f0e8;
-      --muted: #b7bfd9;
-      --accent: #c99b4a;
-      --accent2: #7dd3fc;
-      --danger: #fb7185;
-      --good: #86efac;
-      --line: rgba(255,255,255,.13);
-      --shadow: 0 18px 45px rgba(0,0,0,.35);
-      --radius: 18px;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--ink);
-      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at 15% 10%, rgba(125,211,252,.2), transparent 28%),
-        radial-gradient(circle at 85% 15%, rgba(201,155,74,.18), transparent 30%),
-        radial-gradient(circle at 50% 100%, rgba(139,92,246,.17), transparent 35%),
-        var(--bg);
-    }
-    header {
-      padding: 28px clamp(18px, 3vw, 42px) 14px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(8, 11, 25, 0.62);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .topline { display:flex; justify-content:space-between; gap:18px; align-items:flex-start; flex-wrap:wrap; }
-    h1 { margin: 0; font-size: clamp(2rem, 5vw, 4.4rem); line-height: .95; letter-spacing: -.05em; }
-    .tagline { margin: 10px 0 0; color: var(--muted); max-width: 780px; font-size: 1.05rem; }
-    .version { border:1px solid var(--line); border-radius:999px; padding:8px 12px; color:var(--muted); font-size:.9rem; background:rgba(255,255,255,.05); }
-    main { padding: 24px clamp(14px, 3vw, 42px) 48px; display:grid; gap:20px; }
-    .grid { display:grid; grid-template-columns: 1.05fr .95fr; gap:20px; align-items:start; }
-    @media (max-width: 980px) { .grid { grid-template-columns:1fr; } header { position:relative; } }
-    .card { background: var(--panel); border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow:hidden; }
-    .card h2, .card h3 { margin:0; }
-    .card-head { padding:18px 20px; border-bottom:1px solid var(--line); background: rgba(255,255,255,.035); display:flex; justify-content:space-between; gap:12px; align-items:center; }
-    .card-body { padding:20px; }
-    label { display:block; font-weight:700; color:#fff; margin: 0 0 8px; }
-    select, input, textarea {
-      width:100%; border:1px solid var(--line); border-radius:12px; background:rgba(0,0,0,.24); color:var(--ink); padding:11px 12px; font:inherit;
-    }
-    textarea { min-height:120px; resize:vertical; }
-    .form-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
-    @media (max-width: 740px) { .form-grid { grid-template-columns:1fr; } }
-    .btnrow { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
-    button {
-      border:0; border-radius: 999px; padding: 11px 15px; font-weight:800; cursor:pointer; color:#101420; background:var(--accent); box-shadow: 0 8px 18px rgba(0,0,0,.25);
-    }
-    button.secondary { background:rgba(255,255,255,.11); color:var(--ink); border:1px solid var(--line); }
-    button.blue { background:var(--accent2); color:#06111a; }
-    button.danger { background:var(--danger); color:#24040a; }
-    .pill { display:inline-flex; align-items:center; gap:6px; padding:6px 9px; border-radius:999px; background:rgba(255,255,255,.08); color:var(--muted); border:1px solid var(--line); font-size:.86rem; }
-    .output-title { font-size:1.8rem; margin:0 0 8px; }
-    .section { margin: 18px 0 0; padding-top:18px; border-top:1px solid var(--line); }
-    .section:first-child { margin-top:0; padding-top:0; border-top:0; }
-    .kv { display:grid; grid-template-columns: 140px 1fr; gap:8px; margin:8px 0; color:var(--muted); }
-    .kv strong { color:var(--ink); }
-    ul { padding-left: 1.2rem; }
-    li { margin: 6px 0; }
-    .list { display:grid; gap:10px; }
-    .item { padding:12px; border-radius:14px; background:rgba(255,255,255,.055); border:1px solid var(--line); }
-    .item b { color:#fff; }
-    .muted { color:var(--muted); }
-    .split { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    @media (max-width: 720px) { .split { grid-template-columns:1fr; } }
-    .scene { cursor:pointer; transition: transform .15s ease, background .15s ease; }
-    .scene:hover { transform: translateY(-1px); background:rgba(125,211,252,.08); }
-    .scene.active { outline:2px solid var(--accent2); }
-    .secret { border-left:4px solid var(--danger); }
-    .clue { border-left:4px solid var(--accent2); }
-    .log { max-height: 360px; overflow:auto; display:grid; gap:8px; }
-    .log-entry { background:rgba(0,0,0,.2); border:1px solid var(--line); padding:10px; border-radius:12px; color:var(--muted); }
-    .small { font-size:.9rem; }
-    .footer-note { color:var(--muted); text-align:center; font-size:.9rem; padding:8px; }
-    .hidden { display:none !important; }
+    :root{--bg:#0b1020;--panel:rgba(23,30,55,.94);--panel2:rgba(35,43,78,.94);--ink:#f5efe3;--muted:#bac4dc;--accent:#d6a85a;--accent2:#7dd3fc;--danger:#fb7185;--good:#86efac;--warn:#fde68a;--line:rgba(255,255,255,.14);--shadow:0 18px 48px rgba(0,0,0,.34);--radius:18px;--black:rgba(0,0,0,.28)}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 12% 8%,rgba(125,211,252,.20),transparent 28%),radial-gradient(circle at 88% 12%,rgba(214,168,90,.18),transparent 30%),radial-gradient(circle at 50% 100%,rgba(139,92,246,.18),transparent 38%),var(--bg)}
+    header{padding:24px clamp(16px,3vw,42px) 14px;border-bottom:1px solid var(--line);background:rgba(7,10,23,.72);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10}.topline{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}h1{margin:0;font-size:clamp(2rem,5vw,4.2rem);line-height:.95;letter-spacing:-.05em}.tagline{margin:10px 0 0;color:var(--muted);max-width:800px;font-size:1.05rem}.version,.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:.9rem;background:rgba(255,255,255,.06)}main{padding:22px clamp(14px,3vw,42px) 48px;display:grid;gap:20px}.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:start}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:980px){.grid,.three,.two{grid-template-columns:1fr}header{position:relative}}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.card-head{padding:16px 18px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.04);display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.card h2,.card h3{margin:0}.card-body{padding:18px}label{display:block;font-weight:800;margin:0 0 8px;color:#fff}select,input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:var(--black);color:var(--ink);padding:11px 12px;font:inherit}textarea{min-height:112px;resize:vertical}.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}button{border:0;border-radius:999px;padding:11px 15px;font-weight:850;cursor:pointer;color:#101420;background:var(--accent);box-shadow:0 8px 18px rgba(0,0,0,.25)}button.secondary{background:rgba(255,255,255,.11);color:var(--ink);border:1px solid var(--line)}button.blue{background:var(--accent2);color:#06111a}button.danger{background:var(--danger);color:#24040a}button.good{background:var(--good);color:#05240f}.muted{color:var(--muted)}.small{font-size:.9rem}.section{margin:18px 0 0;padding-top:18px;border-top:1px solid var(--line)}.section:first-child{margin-top:0;padding-top:0;border-top:0}.item{padding:12px;border-radius:14px;background:rgba(255,255,255,.055);border:1px solid var(--line)}.item b{color:#fff}.list{display:grid;gap:10px}.kv{display:grid;grid-template-columns:135px 1fr;gap:8px;margin:8px 0;color:var(--muted)}.kv strong{color:var(--ink)}ul{padding-left:1.2rem}li{margin:6px 0}.scene{cursor:pointer;transition:transform .15s ease,background .15s ease}.scene:hover{transform:translateY(-1px);background:rgba(125,211,252,.08)}.scene.active{outline:2px solid var(--accent2)}.secret{border-left:4px solid var(--danger)}.clue{border-left:4px solid var(--accent2)}.host{border-left:4px solid var(--warn)}.public{border-left:4px solid var(--good)}.tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{font-size:.88rem}.tab.active{background:var(--accent2);color:#06111a}.log{max-height:330px;overflow:auto;display:grid;gap:8px}.log-entry{background:rgba(0,0,0,.22);border:1px solid var(--line);padding:10px;border-radius:12px;color:var(--muted)}.badge-line{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.hidden{display:none!important}.footer-note{text-align:center;color:var(--muted);font-size:.9rem;padding:8px}.copy{white-space:pre-wrap;background:rgba(0,0,0,.24);border:1px solid var(--line);border-radius:14px;padding:12px;color:var(--muted)}
   </style>
 </head>
 <body>
-  <header>
-    <div class="topline">
-      <div>
-        <h1>The Infinite One-Shot Machine</h1>
-        <p class="tagline">Feed me adventures you like. Build something new from them. Run it. Surprise me.</p>
-      </div>
-      <div class="version" id="versionBadge">v0.26.05.30.0001 · Stage 0/1 Prototype</div>
-    </div>
-  </header>
-
-  <main>
-    <section class="card">
-      <div class="card-head">
-        <h2>Machine Controls</h2>
-        <span class="pill">Web-first · local-only · GitHub Pages ready</span>
-      </div>
-      <div class="card-body">
-        <div class="form-grid">
-          <div>
-            <label for="genre">Genre</label>
-            <select id="genre">
-              <option>Fantasy</option><option>Horror</option><option>Mystery</option><option>Sci-Fi</option><option>Mixed</option>
-            </select>
-          </div>
-          <div>
-            <label for="length">Adventure Length</label>
-            <select id="length">
-              <option>1 Hour</option><option>2 Hours</option><option selected>4 Hours</option><option>Full Session</option>
-            </select>
-          </div>
-          <div>
-            <label for="tone">Tone</label>
-            <select id="tone">
-              <option>Classic Adventure</option><option>Strange & Whimsical</option><option>Grim Mystery</option><option>Heroic Pulp</option><option>Creeping Dread</option>
-            </select>
-          </div>
-        </div>
-        <div class="btnrow">
-          <button onclick="generateAdventure()">Generate One-Shot</button>
-          <button class="secondary" onclick="saveAdventure()">Save Locally</button>
-          <button class="secondary" onclick="loadAdventure()">Load Saved</button>
-          <button class="blue" onclick="exportAdventure()">Export JSON</button>
-          <button class="danger" onclick="resetSession()">Reset Session</button>
-        </div>
-      </div>
-    </section>
-
-    <div class="grid">
-      <section class="card">
-        <div class="card-head">
-          <h2>Generated Adventure</h2>
-          <span class="pill" id="seedBadge">No seed yet</span>
-        </div>
-        <div class="card-body" id="adventureOutput">
-          <p class="muted">Generate an adventure to begin. This prototype creates a playable one-shot from reusable hooks, villains, NPCs, locations, encounters, clues, secrets, twists, rewards, complications, and finales.</p>
-        </div>
-      </section>
-
-      <aside class="card">
-        <div class="card-head">
-          <h2>Host Mode</h2>
-          <span class="pill">Human-assisted DM</span>
-        </div>
-        <div class="card-body">
-          <div class="section">
-            <h3>Current Scene</h3>
-            <div id="currentScene" class="item muted">No scene selected.</div>
-            <div class="btnrow">
-              <button class="secondary" onclick="narrateScene()">Speak Scene</button>
-              <button class="secondary" onclick="addLog('The host advanced the scene.')">Log Advance</button>
-            </div>
-          </div>
-          <div class="section">
-            <h3>Session Log</h3>
-            <div class="btnrow" style="margin-top:10px">
-              <input id="logInput" placeholder="Add note, player action, ruling, clue found..." />
-              <button class="blue" onclick="addManualLog()">Add</button>
-            </div>
-            <div id="sessionLog" class="log" style="margin-top:12px"></div>
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <div class="grid">
-      <section class="card">
-        <div class="card-head"><h2>Importer Placeholder</h2><span class="pill">Stage 2 preview</span></div>
-        <div class="card-body">
-          <p class="muted">Paste adventure notes or a public URL. In this first build, the importer creates rough component candidates locally. Future versions will support richer extraction.</p>
-          <textarea id="importText" placeholder="Paste adventure notes, public summaries, or a URL here..."></textarea>
-          <div class="btnrow">
-            <button class="secondary" onclick="mockImport()">Extract Components</button>
-            <button class="secondary" onclick="clearImport()">Clear</button>
-          </div>
-          <div id="importOutput" class="list" style="margin-top:14px"></div>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-head"><h2>Build Health</h2><span class="pill">Roadmap check</span></div>
-        <div class="card-body" id="healthOutput"></div>
-      </section>
-    </div>
-
-    <p class="footer-note">The Infinite One-Shot Machine · v0.26.05.30.0001 · Stage 0 foundation + Stage 1 remix prototype</p>
-  </main>
-
-  <script>
-    const APP_VERSION = 'v0.26.05.30.0001';
-    let state = { adventure:null, activeSceneIndex:null, log:[] };
-
-    const data = {
-      Fantasy: {
-        hooks:['A bell rings beneath an abandoned shrine every midnight.','A caravan arrives with every passenger asleep and no driver.','The village well whispers the names of people who will vanish tomorrow.','A noble offers a fortune for the return of a map they claim never existed.'],
-        villains:['a disgraced temple guardian','a smiling hag disguised as a healer','a desperate baron possessed by a relic','a cult leader who thinks they are saving the town'],
-        locations:['the Sunken Chapel','the Briar-Marked Road','the Moonless Mill','the Old King\'s cistern'],
-        encounters:['animated scarecrows blocking a moonlit bridge','bandits arguing with the monster they were hired to guard','a puzzle door that opens only after a true confession','a tense parley with spirits trapped in old armor']
-      },
-      Horror: {
-        hooks:['The same child knocks on every door at exactly 3:13 a.m.','A lighthouse beam reveals things that are not there in daylight.','Every mirror in town shows the same empty dining room.','A funeral procession marches through the woods, but nobody has died yet.'],
-        villains:['an ancient grief wearing a human face','a family matriarch who traded the town to something below','a corpse-collector with perfect manners','a parasite spirit feeding on secrets'],
-        locations:['the house under the hill','the drowned graveyard','the candlelit sanitarium','the orchard where crows never land'],
-        encounters:['portraits that beg not to be looked at','a feast where the food remembers being alive','a hallway that rearranges itself around guilt','a monster that only moves while players argue']
-      },
-      Mystery: {
-        hooks:['A magistrate confesses to a murder that has not happened yet.','Three suspects each have impossible alibis and matching bloodstains.','A coded letter names one party member as the next victim.','A thief returns stolen relics and begs to be arrested.'],
-        villains:['a beloved witness manipulating every clue','a detective who solved the crime before causing it','a masked twin hiding in plain sight','a ghost using lies to expose a worse truth'],
-        locations:['the locked observatory','the velvet auction house','the old courthouse records vault','the rain-slick canal district'],
-        encounters:['a social duel at a masked dinner','a chase across rooftop laundry lines','a clue hidden in a forged confession','a suspect who will only speak during a card game']
-      },
-      'Sci-Fi': {
-        hooks:['A distress beacon broadcasts from a ship that was dismantled years ago.','A colony votes unanimously for someone who does not exist.','An asteroid mine reports a sunrise inside the tunnels.','A memory backup wakes up screaming in every clone bay.'],
-        villains:['a corporate caretaker AI with parental instincts','a smuggler captain infected by alien math','a governor replaced by predictive software','a relic probe trying to complete a dead civilization\'s final order'],
-        locations:['the glassed-over habitat dome','the derelict survey ark','the neon salvage bazaar','the silent reactor cathedral'],
-        encounters:['security drones enforcing obsolete etiquette','a zero-gravity fight in a cargo cathedral','a negotiation with a machine that speaks in flashbacks','a hull breach countdown during a moral choice']
-      },
-      Mixed: {}
-    };
-    data.Mixed = {
-      hooks:[...data.Fantasy.hooks, ...data.Horror.hooks, ...data.Mystery.hooks, ...data['Sci-Fi'].hooks],
-      villains:[...data.Fantasy.villains, ...data.Horror.villains, ...data.Mystery.villains, ...data['Sci-Fi'].villains],
-      locations:[...data.Fantasy.locations, ...data.Horror.locations, ...data.Mystery.locations, ...data['Sci-Fi'].locations],
-      encounters:[...data.Fantasy.encounters, ...data.Horror.encounters, ...data.Mystery.encounters, ...data['Sci-Fi'].encounters]
-    };
-    const npcs = ['Mara Vell, a charming informant with one true fear','Old Fenrik, a witness who remembers too much','Captain Elian Cross, loyal until paid otherwise','Sister Halve, a healer who never removes her gloves','Juno Vale, a courier who knows the secret route','Professor Ilyra Quent, brilliant, anxious, and armed with bad theories'];
-    const factions = ['The Lantern Concord','The Ash-Key Society','The Red Sash Company','The Order of the Last Door','The Velvet Ledger'];
-    const clues = ['A wet footprint appears where no water exists.','The victim\'s last note is written in someone else\'s future handwriting.','A common symbol appears on three unrelated objects.','An NPC lies about a detail only the villain should know.','A map omits one room that everyone remembers visiting.'];
-    const secrets = ['The patron caused the first disaster and hired the party to hide it.','The apparent monster is protecting the town from something worse.','One ally is an unwilling host for the villain.','The treasure is a prison key, not a reward.','The final battle can be avoided by exposing the original bargain.'];
-    const twists = ['The villain is not the mastermind, only the first victim.','The safest path makes the moral cost worse.','The missing person does not want to be rescued.','The cursed object is telling the truth.','The enemy faction offers the most honest help.'];
-    const rewards = ['a favor from a grateful faction','a relic that reveals hidden doors once per session','a map to a future adventure','a title that opens noble doors and criminal ones','an ally who can return at a dramatic moment'];
-    const complications = ['A storm cuts off escape.','A rival adventuring party arrives with better equipment and worse judgment.','The town turns against the party unless they reveal a secret.','A countdown begins: six bells until the ritual completes.','A friendly NPC is accused of the central crime.'];
-    const finales = ['a confrontation during a public ceremony','a collapsing dungeon room full of half-truths','a negotiation with blades already drawn','a chase through a location changing shape','a final choice between justice, mercy, and survival'];
-
-    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-    function sample(arr, count){ const copy=[...arr]; const out=[]; while(out.length<count && copy.length){ out.push(copy.splice(Math.floor(Math.random()*copy.length),1)[0]); } return out; }
-    function makeSeed(){ return Math.random().toString(36).slice(2,8).toUpperCase(); }
-
-    function generateAdventure(){
-      const genre = document.getElementById('genre').value;
-      const length = document.getElementById('length').value;
-      const tone = document.getElementById('tone').value;
-      const pool = data[genre];
-      const seed = makeSeed();
-      const hook = pick(pool.hooks);
-      const villain = pick(pool.villains);
-      const location = pick(pool.locations);
-      const primaryNpc = pick(npcs);
-      const faction = pick(factions);
-      const selectedClues = sample(clues, 4);
-      const selectedSecrets = sample(secrets, 3);
-      const selectedScenes = [
-        {title:'Opening Hook', text:hook, reveal:'Give the party a clear reason to act immediately.'},
-        {title:'First Contact', text:`The party meets ${primaryNpc}, who connects the trouble to ${faction}.`, reveal:'Reveal one useful lead and one suspicious contradiction.'},
-        {title:'Investigation', text:`The trail points toward ${location}.`, reveal:selectedClues[0]},
-        {title:'Complication', text:pick(complications), reveal:selectedClues[1]},
-        {title:'Danger Scene', text:pick(pool.encounters), reveal:selectedClues[2]},
-        {title:'Truth Turns', text:pick(twists), reveal:selectedSecrets[0]},
-        {title:'Finale', text:`The story ends with ${pick(finales)}.`, reveal:selectedSecrets[1]}
-      ];
-      state.adventure = {
-        version: APP_VERSION, seed, genre, length, tone, title: makeTitle(location, villain), hook, villain, location, primaryNpc, faction,
-        twist: selectedScenes[5].text, reward: pick(rewards), clues:selectedClues, secrets:selectedSecrets, scenes:selectedScenes,
-        componentTypes:['Hook','Villain','NPC','Faction','Location','Encounter','Clue','Secret','Twist','Reward','Complication','Finale']
-      };
-      state.activeSceneIndex = null;
-      state.log = [];
-      addLog(`Generated adventure seed ${seed}: ${state.adventure.title}`);
-      renderAdventure();
-      renderLog();
-      runHealth();
-    }
-
-    function makeTitle(location, villain){
-      const nouns = ['Echoes','Secret','Bells','Masks','Shadows','Oath','Lantern','Last Door'];
-      return `${pick(nouns)} of ${location.replace(/^the /i,'')}`;
-    }
-
-    function renderAdventure(){
-      const a = state.adventure;
-      if(!a) return;
-      document.getElementById('seedBadge').textContent = `Seed ${a.seed}`;
-      document.getElementById('adventureOutput').innerHTML = `
-        <h2 class="output-title">${escapeHtml(a.title)}</h2>
-        <div class="kv"><strong>Genre</strong><span>${a.genre} · ${a.tone} · ${a.length}</span></div>
-        <div class="kv"><strong>Hook</strong><span>${escapeHtml(a.hook)}</span></div>
-        <div class="kv"><strong>Villain</strong><span>${escapeHtml(a.villain)}</span></div>
-        <div class="kv"><strong>Location</strong><span>${escapeHtml(a.location)}</span></div>
-        <div class="kv"><strong>Key NPC</strong><span>${escapeHtml(a.primaryNpc)}</span></div>
-        <div class="kv"><strong>Faction</strong><span>${escapeHtml(a.faction)}</span></div>
-        <div class="section"><h3>Scene Path</h3><div class="list">${a.scenes.map((s,i)=>`<div class="item scene ${state.activeSceneIndex===i?'active':''}" onclick="selectScene(${i})"><b>${i+1}. ${escapeHtml(s.title)}</b><br><span class="muted">${escapeHtml(s.text)}</span></div>`).join('')}</div></div>
-        <div class="split section">
-          <div><h3>Clues</h3><div class="list">${a.clues.map(c=>`<div class="item clue">${escapeHtml(c)}</div>`).join('')}</div></div>
-          <div><h3>Secrets</h3><div class="list">${a.secrets.map(s=>`<div class="item secret">${escapeHtml(s)}</div>`).join('')}</div></div>
-        </div>
-        <div class="section"><h3>Reward</h3><p>${escapeHtml(a.reward)}</p></div>
-      `;
-    }
-
-    function selectScene(index){
-      state.activeSceneIndex = index;
-      const s = state.adventure.scenes[index];
-      document.getElementById('currentScene').innerHTML = `<b>${escapeHtml(s.title)}</b><br>${escapeHtml(s.text)}<br><br><span class="muted"><b>Reveal:</b> ${escapeHtml(s.reveal)}</span>`;
-      addLog(`Selected scene: ${s.title}`);
-      renderAdventure();
-    }
-
-    function narrateScene(){
-      if(!state.adventure || state.activeSceneIndex===null){ addLog('No scene selected to narrate.'); return; }
-      const s = state.adventure.scenes[state.activeSceneIndex];
-      const text = `${s.title}. ${s.text}`;
-      if('speechSynthesis' in window){
-        window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.rate = .92; utter.pitch = .85;
-        window.speechSynthesis.speak(utter);
-        addLog(`Narrated scene: ${s.title}`);
-      } else addLog('Speech synthesis is not supported in this browser.');
-    }
-
-    function addLog(text){
-      const stamp = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-      state.log.unshift({stamp, text});
-      renderLog();
-    }
-    function addManualLog(){ const input=document.getElementById('logInput'); if(input.value.trim()){ addLog(input.value.trim()); input.value=''; } }
-    function renderLog(){ document.getElementById('sessionLog').innerHTML = state.log.map(e=>`<div class="log-entry"><b>${e.stamp}</b> · ${escapeHtml(e.text)}</div>`).join('') || '<p class="muted small">No log entries yet.</p>'; }
-
-    function saveAdventure(){ localStorage.setItem('iosm-save', JSON.stringify(state)); addLog('Saved current session locally.'); }
-    function loadAdventure(){ const raw=localStorage.getItem('iosm-save'); if(!raw){ addLog('No local save found.'); return; } state=JSON.parse(raw); renderAdventure(); renderLog(); runHealth(); addLog('Loaded local save.'); }
-    function exportAdventure(){ if(!state.adventure){ addLog('Generate an adventure before exporting.'); return; } const blob=new Blob([JSON.stringify(state.adventure,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`infinite-one-shot-${state.adventure.seed}.json`; a.click(); URL.revokeObjectURL(url); addLog('Exported adventure JSON.'); }
-    function resetSession(){ state={adventure:null, activeSceneIndex:null, log:[]}; localStorage.removeItem('iosm-save'); document.getElementById('adventureOutput').innerHTML='<p class="muted">Generate an adventure to begin.</p>'; document.getElementById('currentScene').textContent='No scene selected.'; document.getElementById('seedBadge').textContent='No seed yet'; renderLog(); runHealth(); }
-
-    function mockImport(){
-      const text = document.getElementById('importText').value.trim();
-      if(!text){ document.getElementById('importOutput').innerHTML='<div class="item muted">Paste text or a URL first.</div>'; return; }
-      const words = text.split(/\s+/).filter(Boolean);
-      const isUrl = /^https?:\/\//i.test(text);
-      const candidate = isUrl ? 'URL source queued for future crawler/parser support.' : `Text note analyzed locally. Approx. ${words.length} words.`;
-      document.getElementById('importOutput').innerHTML = `
-        <div class="item"><b>Import Source</b><br><span class="muted">${escapeHtml(candidate)}</span></div>
-        <div class="item"><b>Component Candidates</b><br><span class="muted">Hook, NPC, Location, Secret, Encounter</span></div>
-        <div class="item"><b>Prototype Note</b><br><span class="muted">Stage 2 will turn this into real extraction and component tagging.</span></div>
-      `;
-      addLog('Ran importer placeholder.');
-    }
-    function clearImport(){ document.getElementById('importText').value=''; document.getElementById('importOutput').innerHTML=''; }
-
-    function runHealth(){
-      const checks = [
-        ['Stage 0: Landing page exists', true],
-        ['Stage 0: Version visible', document.getElementById('versionBadge').textContent.includes(APP_VERSION)],
-        ['Stage 1: Adventure remix engine present', typeof generateAdventure === 'function'],
-        ['Stage 1: Required component types modeled', state.adventure ? state.adventure.componentTypes.length >= 12 : true],
-        ['Playable at every stage', true],
-        ['Human-editable local component data', true],
-        ['Web-first and GitHub Pages compatible', location.protocol === 'file:' || location.hostname.includes('github') || true]
-      ];
-      document.getElementById('healthOutput').innerHTML = checks.map(([name, ok])=>`<div class="item"><b>${ok?'✅':'⚠️'} ${escapeHtml(name)}</b></div>`).join('') + `<p class="muted small">Current roadmap status: Stage 0 foundation implemented; Stage 1 remix prototype partially implemented.</p>`;
-    }
-
-    function escapeHtml(str){ return String(str).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
-    runHealth();
-  </script>
+<header><div class="topline"><div><h1>The Infinite One-Shot Machine</h1><p class="tagline">Feed me adventures you like. Build something new from them. Run it. Surprise me.</p></div><div class="version" id="versionBadge">v0.26.05.30.0002 · Stage 1A–1C</div></div></header>
+<main>
+<section class="card"><div class="card-head"><h2>Machine Controls</h2><span class="pill">Stage 0 complete · Stage 1 active</span></div><div class="card-body"><div class="three"><div><label for="genre">Genre</label><select id="genre"><option>Fantasy</option><option>Horror</option><option>Mystery</option><option>Sci-Fi</option><option selected>Mixed</option></select></div><div><label for="length">Adventure Length</label><select id="length"><option>1 Hour</option><option>2 Hours</option><option selected>4 Hours</option><option>Full Session</option></select></div><div><label for="tone">Tone</label><select id="tone"><option>Classic Adventure</option><option>Strange & Whimsical</option><option>Grim Mystery</option><option>Heroic Pulp</option><option>Creeping Dread</option></select></div></div><div class="btnrow"><button onclick="generateAdventure()">Generate One-Shot</button><button class="secondary" onclick="saveAdventure()">Save Locally</button><button class="secondary" onclick="loadAdventure()">Load Saved</button><button class="blue" onclick="exportAdventure()">Export JSON</button><button class="danger" onclick="resetSession()">Reset Session</button></div></div></section>
+<div class="grid"><section class="card"><div class="card-head"><h2>Generated Adventure</h2><span class="pill" id="seedBadge">No seed yet</span></div><div class="card-body"><div class="tabs"><button class="tab active secondary" id="tab-adventure" onclick="showTab('adventure')">Adventure</button><button class="tab secondary" id="tab-scenes" onclick="showTab('scenes')">Scenes</button><button class="tab secondary" id="tab-host" onclick="showTab('host')">Host Secrets</button><button class="tab secondary" id="tab-components" onclick="showTab('components')">Components</button></div><div id="adventureOutput" class="section"><p class="muted">Generate an adventure to begin. This build creates structured one-shots from a human-editable component database and separates player-facing information from host-only secrets.</p></div></div></section>
+<aside class="card"><div class="card-head"><h2>Host Mode</h2><span class="pill">Run the table</span></div><div class="card-body"><div class="section"><h3>Current Scene</h3><div id="currentScene" class="item muted">No scene selected.</div><div class="btnrow"><button class="secondary" onclick="narrateScene()">Speak Scene</button><button class="good" onclick="markSceneDone()">Mark Resolved</button><button class="secondary" onclick="addLog('The host advanced the scene.')">Log Advance</button></div></div><div class="section"><h3>Session Log</h3><div class="btnrow" style="margin-top:10px"><input id="logInput" placeholder="Add note, player action, ruling, clue found..."/><button class="blue" onclick="addManualLog()">Add</button></div><div id="sessionLog" class="log" style="margin-top:12px"></div></div></div></aside></div>
+<div class="grid"><section class="card"><div class="card-head"><h2>Importer Placeholder</h2><span class="pill">Stage 2 preview</span></div><div class="card-body"><p class="muted">Paste notes, a public summary, or a URL. This build extracts rough component candidates locally so you can start building a component library before true PDF/URL ingestion exists.</p><textarea id="importText" placeholder="Paste adventure notes, public summaries, or a URL here..."></textarea><div class="btnrow"><button class="secondary" onclick="mockImport()">Extract Components</button><button class="secondary" onclick="clearImport()">Clear</button></div><div id="importOutput" class="list" style="margin-top:14px"></div></div></section><section class="card"><div class="card-head"><h2>Build Health</h2><span class="pill">Project Bible check</span></div><div class="card-body" id="healthOutput"></div></section></div>
+<section class="card"><div class="card-head"><h2>Human-Editable Component Library</h2><span class="pill">Stage 1A</span></div><div class="card-body"><p class="muted">The generator uses this structured library internally. Future builds can move these pools into editable JSON files or a database.</p><div id="libraryPreview" class="two"></div></div></section>
+<p class="footer-note">The Infinite One-Shot Machine · v0.26.05.30.0002 · Stage 1A component database + Stage 1B assembly + Stage 1C host-only secrets</p>
+</main>
+<script>
+const APP_VERSION='v0.26.05.30.0002';
+let state={adventure:null,activeSceneIndex:null,log:[],activeTab:'adventure'};
+const pools={
+Fantasy:{hooks:['A bell rings beneath an abandoned shrine every midnight.','A caravan arrives with every passenger asleep and no driver.','The village well whispers the names of people who will vanish tomorrow.','A noble offers a fortune for the return of a map they claim never existed.','A feast day is ruined when the honored saint statue starts bleeding fresh ink.'],villains:['a disgraced temple guardian','a smiling hag disguised as a healer','a desperate baron possessed by a relic','a cult leader who thinks they are saving the town','a dragon-blooded tax collector building a private army'],locations:['the Sunken Chapel','the Briar-Marked Road','the Moonless Mill','the Old King\'s cistern','the foxglove ruins above town'],encounters:['animated scarecrows blocking a moonlit bridge','bandits arguing with the monster they were hired to guard','a puzzle door that opens only after a true confession','a tense parley with spirits trapped in old armor','a chase through a market as stalls fold into pocket dimensions']},
+Horror:{hooks:['The same child knocks on every door at exactly 3:13 a.m.','A lighthouse beam reveals things that are not there in daylight.','Every mirror in town shows the same empty dining room.','A funeral procession marches through the woods, but nobody has died yet.','The local dogs keep digging up tiny coffins labeled with tomorrow\'s date.'],villains:['an ancient grief wearing a human face','a family matriarch who traded the town to something below','a corpse-collector with perfect manners','a parasite spirit feeding on secrets','a choir of drowned children pretending to be one person'],locations:['the house under the hill','the drowned graveyard','the candlelit sanitarium','the orchard where crows never land','the inn room that is larger on the inside'],encounters:['portraits that beg not to be looked at','a feast where the food remembers being alive','a hallway that rearranges itself around guilt','a monster that only moves while players argue','a locked nursery where the lullaby answers questions']},
+Mystery:{hooks:['A magistrate confesses to a murder that has not happened yet.','Three suspects each have impossible alibis and matching bloodstains.','A coded letter names one party member as the next victim.','A thief returns stolen relics and begs to be arrested.','A public execution is interrupted by the condemned person arriving in the crowd.'],villains:['a beloved witness manipulating every clue','a detective who solved the crime before causing it','a masked twin hiding in plain sight','a ghost using lies to expose a worse truth','a forger who can alter memories by altering documents'],locations:['the locked observatory','the velvet auction house','the old courthouse records vault','the rain-slick canal district','the library wing that burned down last year'],encounters:['a social duel at a masked dinner','a chase across rooftop laundry lines','a clue hidden in a forged confession','a suspect who will only speak during a card game','a witness whose testimony changes with the weather']},
+'Sci-Fi':{hooks:['A distress beacon broadcasts from a ship that was dismantled years ago.','A colony votes unanimously for someone who does not exist.','An asteroid mine reports a sunrise inside the tunnels.','A memory backup wakes up screaming in every clone bay.','A luxury space elevator stops between floors and begins accepting confessions.'],villains:['a corporate caretaker AI with parental instincts','a smuggler captain infected by alien math','a governor replaced by predictive software','a relic probe trying to complete a dead civilization\'s final order','a diplomat cloned once too many times'],locations:['the glassed-over habitat dome','the derelict survey ark','the neon salvage bazaar','the silent reactor cathedral','the station garden where no plant casts a shadow'],encounters:['security drones enforcing obsolete etiquette','a zero-gravity fight in a cargo cathedral','a negotiation with a machine that speaks in flashbacks','a hull breach countdown during a moral choice','a maintenance tunnel full of singing sensor ghosts']}
+};
+pools.Mixed={hooks:[...pools.Fantasy.hooks,...pools.Horror.hooks,...pools.Mystery.hooks,...pools['Sci-Fi'].hooks],villains:[...pools.Fantasy.villains,...pools.Horror.villains,...pools.Mystery.villains,...pools['Sci-Fi'].villains],locations:[...pools.Fantasy.locations,...pools.Horror.locations,...pools.Mystery.locations,...pools['Sci-Fi'].locations],encounters:[...pools.Fantasy.encounters,...pools.Horror.encounters,...pools.Mystery.encounters,...pools['Sci-Fi'].encounters]};
+const shared={npcs:['Mara Vell, a charming informant with one true fear','Old Fenrik, a witness who remembers too much','Captain Elian Cross, loyal until paid otherwise','Sister Halve, a healer who never removes her gloves','Juno Vale, a courier who knows the secret route','Professor Ilyra Quent, brilliant, anxious, and armed with bad theories','Bramblejack, a cheerful guide who is wrong about almost everything','Nalia Thorne, a noble aide quietly gathering blackmail'],factions:['The Lantern Concord','The Ash-Key Society','The Red Sash Company','The Order of the Last Door','The Velvet Ledger','The Kindly Knife','The Museum of Impossible Weather'],clues:['A symbol appears twice, once carved by hand and once grown naturally.','A witness remembers the smell of oranges, but no oranges grow nearby.','The supposed monster left boot prints.','The key clue is written in a language only children in town still use.','The villain is afraid of the same thing the victims were chasing.','The map is accurate only when held upside down in candlelight.'],secrets:['The patron who hires the party caused the original problem.','The monster is guarding the victims, not hunting them.','The missing person left voluntarily to prevent something worse.','The villain is being blackmailed by a weaker but smarter enemy.','The treasure is the prison, not the reward.','The town has solved this crisis before and chose to forget.'],twists:['The final enemy asks the party for help instead of attacking.','The safest solution requires exposing an ally\'s lie.','The first clue was planted by someone trying to protect the villain.','The supposed victim has been orchestrating the rescue.','The location itself is alive and has been testing the party.','The villain is defeated by fulfilling, not stopping, the ritual.'],rewards:['a relic that answers one question truthfully but vaguely','a map to a place that should not exist','a favor from a faction that publicly denies involvement','a minor magical item with a suspiciously personal inscription','a restored reputation with one dangerous complication','a rescued NPC who becomes a recurring ally'],complications:['A rival group arrives with a simpler and worse plan.','A storm, lockdown, or curfew cuts off the obvious exit.','One NPC tells the truth in the most misleading way possible.','The party can save the evidence or save a bystander, not both.','The villain accelerates the timetable after learning the party is involved.','A trusted helper is secretly terrified of the correct answer.'],finales:['a confrontation during a public ritual','a collapsing dungeon escape with a moral choice','a courtroom-style reveal under threat of violence','a desperate chase to stop the wrong person from doing the right thing','a parley with the true power behind the villain','a final battle where the environment is the real threat']};
+function pick(a){return a[Math.floor(Math.random()*a.length)]} function sample(a,n){const c=[...a],r=[];while(c.length&&r.length<n){r.push(c.splice(Math.floor(Math.random()*c.length),1)[0])}return r} function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))} function seed(){return Math.random().toString(36).slice(2,8).toUpperCase()}
+function generateAdventure(){const genre=document.getElementById('genre').value,length=document.getElementById('length').value,tone=document.getElementById('tone').value,p=pools[genre],s=seed();const hook=pick(p.hooks),villain=pick(p.villains),primaryLocation=pick(p.locations),locations=sample(p.locations,3),encounters=sample(p.encounters,4),npcs=sample(shared.npcs,4),factions=sample(shared.factions,2),clues=sample(shared.clues,4),secrets=sample(shared.secrets,3),twist=pick(shared.twists),reward=pick(shared.rewards),complication=pick(shared.complications),finale=pick(shared.finales);const title=makeTitle(primaryLocation,genre);const scenes=[{name:'Opening Hook',public:`${hook} The trail points toward ${primaryLocation}.`,host:`Start in motion. Ask each player why their character cannot ignore this problem.`,clue:clues[0]},{name:'First Contact',public:`The party meets ${npcs[0]} and learns that ${factions[0]} has been asking questions nearby.`,host:`This NPC knows a partial truth but is protecting someone. Let players earn trust through kindness, payment, leverage, or clever roleplay.`,clue:clues[1]},{name:'Dangerous Crossing',public:`The route to ${locations[1]||primaryLocation} is interrupted by ${encounters[0]}.`,host:`Use this as a flexible combat, chase, or negotiation. Keep it short if the session is running long.`,clue:clues[2]},{name:'The False Answer',public:`Evidence seems to implicate ${npcs[1]}, but the details do not quite fit.`,host:`This is the red herring. The players should feel smart for doubting it, not punished for following it. Secret: ${secrets[0]}`,clue:clues[3]},{name:'Complication',public:`${complication}`,host:`Escalate pressure here. Force a choice that reveals character priorities. Secret: ${secrets[1]}`,clue:'Optional clue: connect the villain to the opening hook.'},{name:'Revelation',public:`The truth points toward ${villain}, but the situation is more complicated than simple villainy.`,host:`Main twist: ${twist}. Hidden truth: ${secrets[2]}`,clue:'Reveal only if players earned enough clues.'},{name:'Finale',public:`The adventure climaxes with ${finale} at ${primaryLocation}.`,host:`Offer a win condition beyond killing the villain. Reward: ${reward}`,clue:'End with a consequence, not just treasure.'}];state.adventure={version:APP_VERSION,seed:s,title,genre,length,tone,hook,villain,primaryLocation,locations,encounters,npcs,factions,clues,secrets,twist,reward,complication,finale,scenes,resolved:[]};state.activeSceneIndex=0;state.log=[];addLog(`Generated ${title} (${genre}, ${tone}, ${length}).`);document.getElementById('seedBadge').textContent='Seed '+s;renderAdventure();renderScene();}
+function makeTitle(loc,genre){const a=['The Secret of','The Last Bell of','Shadows over','The Trouble at','The Vanishing of','The Broken Oath of'];return `${pick(a)} ${loc.replace(/^the /i,'')}`}
+function showTab(name){state.activeTab=name;document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));const el=document.getElementById('tab-'+name);if(el)el.classList.add('active');renderAdventure()}
+function renderAdventure(){const out=document.getElementById('adventureOutput');const a=state.adventure;if(!a){out.innerHTML='<p class="muted">Generate an adventure to begin.</p>';return} if(state.activeTab==='adventure'){out.innerHTML=`<div class="section"><h2 class="output-title">${esc(a.title)}</h2><div class="badge-line"><span class="pill">${esc(a.genre)}</span><span class="pill">${esc(a.length)}</span><span class="pill">${esc(a.tone)}</span><span class="pill">Seed ${esc(a.seed)}</span></div><div class="kv"><strong>Hook</strong><span>${esc(a.hook)}</span></div><div class="kv"><strong>Location</strong><span>${esc(a.primaryLocation)}</span></div><div class="kv"><strong>Threat</strong><span>${esc(a.villain)}</span></div><div class="kv"><strong>Faction Pressure</strong><span>${esc(a.factions.join(' vs. '))}</span></div><div class="kv"><strong>Reward</strong><span>${esc(a.reward)}</span></div></div><div class="section"><h3>One-Shot Summary</h3><p class="muted">The party is drawn into ${esc(a.primaryLocation)} by ${esc(a.hook.toLowerCase())} What begins as a straightforward problem becomes tangled in faction pressure, false accusations, and a hidden truth. The players can win by discovering what is really happening, choosing who to trust, and resolving the finale before the situation locks into place.</p></div>`} else if(state.activeTab==='scenes'){out.innerHTML=`<div class="section"><h3>Scene List</h3><div class="list">${a.scenes.map((sc,i)=>`<div class="item scene public ${state.activeSceneIndex===i?'active':''}" onclick="selectScene(${i})"><b>${i+1}. ${esc(sc.name)}</b><p class="muted small">${esc(sc.public)}</p>${a.resolved.includes(i)?'<span class="pill">Resolved</span>':''}</div>`).join('')}</div></div>`} else if(state.activeTab==='host'){out.innerHTML=`<div class="section"><h3>Host-Only Truths</h3><div class="list"><div class="item secret"><b>Villain</b><p class="muted">${esc(a.villain)}</p></div><div class="item secret"><b>Main Twist</b><p class="muted">${esc(a.twist)}</p></div>${a.secrets.map(x=>`<div class="item secret"><b>Secret</b><p class="muted">${esc(x)}</p></div>`).join('')}</div></div><div class="section"><h3>Clues to Reveal</h3><div class="list">${a.clues.map(x=>`<div class="item clue"><b>Clue</b><p class="muted">${esc(x)}</p></div>`).join('')}</div></div>`} else {out.innerHTML=`<div class="section"><h3>Components Used</h3><div class="two"><div class="item"><b>NPCs</b><ul>${a.npcs.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="item"><b>Encounters</b><ul>${a.encounters.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="item"><b>Locations</b><ul>${a.locations.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="item"><b>Factions</b><ul>${a.factions.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></div>`}}
+function selectScene(i){state.activeSceneIndex=i;renderAdventure();renderScene();addLog(`Selected scene ${i+1}: ${state.adventure.scenes[i].name}.`)}
+function renderScene(){const box=document.getElementById('currentScene'),a=state.adventure;if(!a||state.activeSceneIndex==null){box.textContent='No scene selected.';box.className='item muted';return}const sc=a.scenes[state.activeSceneIndex];box.className='item host';box.innerHTML=`<b>${esc(sc.name)}</b><p>${esc(sc.public)}</p><p class="muted small"><b>Host note:</b> ${esc(sc.host)}</p><p class="muted small"><b>Clue:</b> ${esc(sc.clue)}</p>`}
+function markSceneDone(){if(!state.adventure||state.activeSceneIndex==null)return;if(!state.adventure.resolved.includes(state.activeSceneIndex))state.adventure.resolved.push(state.activeSceneIndex);addLog(`Resolved scene ${state.activeSceneIndex+1}: ${state.adventure.scenes[state.activeSceneIndex].name}.`);renderAdventure()}
+function addLog(text){state.log.unshift({time:new Date().toLocaleTimeString(),text});renderLog()} function addManualLog(){const el=document.getElementById('logInput');if(!el.value.trim())return;addLog(el.value.trim());el.value=''} function renderLog(){document.getElementById('sessionLog').innerHTML=state.log.map(e=>`<div class="log-entry"><b>${esc(e.time)}</b> · ${esc(e.text)}</div>`).join('')||'<div class="muted small">No session notes yet.</div>'}
+function narrateScene(){if(!state.adventure||state.activeSceneIndex==null){addLog('No scene available to narrate.');return}const sc=state.adventure.scenes[state.activeSceneIndex];const msg=new SpeechSynthesisUtterance(sc.public);msg.rate=.92;msg.pitch=.92;speechSynthesis.cancel();speechSynthesis.speak(msg);addLog('Narrated current scene aloud.')}
+function saveAdventure(){localStorage.setItem('iosm_save',JSON.stringify(state));addLog('Saved locally in this browser.')} function loadAdventure(){const raw=localStorage.getItem('iosm_save');if(!raw){addLog('No local save found.');return}state=JSON.parse(raw);document.getElementById('seedBadge').textContent=state.adventure?'Seed '+state.adventure.seed:'No seed yet';renderAdventure();renderScene();renderLog();addLog('Loaded local save.')} function resetSession(){state={adventure:null,activeSceneIndex:null,log:[],activeTab:'adventure'};document.getElementById('seedBadge').textContent='No seed yet';document.getElementById('adventureOutput').innerHTML='<p class="muted">Generate an adventure to begin.</p>';document.getElementById('currentScene').textContent='No scene selected.';document.getElementById('sessionLog').innerHTML='';showTab('adventure')}
+function exportAdventure(){if(!state.adventure){addLog('Generate an adventure before exporting.');return}const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`infinite-one-shot-${state.adventure.seed}.json`;a.click();URL.revokeObjectURL(url);addLog('Exported adventure JSON.')}
+function mockImport(){const t=document.getElementById('importText').value.trim();const out=document.getElementById('importOutput');if(!t){out.innerHTML='<div class="item muted">Paste notes or a URL first.</div>';return}const words=t.split(/\s+/).length;const isUrl=/^https?:\/\//i.test(t);out.innerHTML=`<div class="item"><b>Import Scan</b><p class="muted">Detected ${isUrl?'a public URL or web source':'pasted notes'} with roughly ${words} words.</p></div><div class="item clue"><b>Candidate Hook</b><p class="muted">${esc(t.slice(0,160))}${t.length>160?'...':''}</p></div><div class="item host"><b>Next Stage 2 Need</b><p class="muted">True import will classify hooks, NPCs, locations, secrets, twists, and encounters into the component database.</p></div>`}
+function clearImport(){document.getElementById('importText').value='';document.getElementById('importOutput').innerHTML=''}
+function renderHealth(){document.getElementById('healthOutput').innerHTML=`<div class="list"><div class="item public"><b>Stage 0 Foundation</b><p class="muted">Complete: repository, GitHub Pages deployment, visible version, playable public URL.</p></div><div class="item public"><b>Stage 1A Component Database</b><p class="muted">Implemented: hooks, villains, locations, encounters, NPCs, factions, clues, secrets, twists, rewards, complications, finales.</p></div><div class="item public"><b>Stage 1B Adventure Assembly</b><p class="muted">Implemented: generated summary, scene chain, clue flow, escalation, revelation, finale.</p></div><div class="item public"><b>Stage 1C Host Secrets</b><p class="muted">Implemented: host-only truths, scene notes, clue reveal guidance, resolved scene tracking.</p></div><div class="item host"><b>Next Recommended Milestone</b><p class="muted">Stage 1D: improve component editing/import/export, then Stage 2 true adventure import.</p></div></div>`}
+function renderLibraryPreview(){const el=document.getElementById('libraryPreview');el.innerHTML=Object.keys(pools).filter(k=>k!=='Mixed').map(k=>`<div class="item"><b>${esc(k)} Pools</b><p class="muted small">Hooks: ${pools[k].hooks.length} · Villains: ${pools[k].villains.length} · Locations: ${pools[k].locations.length} · Encounters: ${pools[k].encounters.length}</p></div>`).join('')+`<div class="item"><b>Shared Story Pools</b><p class="muted small">NPCs: ${shared.npcs.length} · Factions: ${shared.factions.length} · Clues: ${shared.clues.length} · Secrets: ${shared.secrets.length} · Twists: ${shared.twists.length}</p></div>`}
+renderHealth();renderLibraryPreview();renderLog();
+</script>
 </body>
 </html>
