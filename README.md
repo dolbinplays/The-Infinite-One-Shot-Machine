@@ -1,52 +1,29 @@
-# The Infinite One-Shot Machine
+# The Infinite One-Shot Machine — v0.26.05.30.0007
 
-Version: v0.26.05.30.0006
+Stage 2B.2 Import Quality Pass.
 
-## Stage 2 Import Extraction Upgrade Patch
+## What changed
 
-This build advances the roadmap from Stage 2A Text Import to Stage 2 Import Extraction Upgrade.
+- Added generic heading filtering for import candidates.
+- Added confidence scoring for extracted components.
+- High-confidence candidates are selected by default.
+- Medium and low-confidence candidates are reviewable but not auto-selected.
+- Added visible confidence labels and score reasons.
+- Added import controls for selecting by confidence level.
+- Improved Build Health checks for Stage 2B.2.
 
-### Included
+## Current roadmap status
 
-- GitHub Pages-ready single-file app
-- Adventure Remix Engine
-- Host Mode with host-only secrets
-- Component Library editor
-- JSON import/export
-- Text importer
-- URL import attempt
-- URL import fallback for CORS-blocked pages
-- Candidate review/approval flow
-- Build Health panel
+- Stage 0 Foundation: Complete
+- Stage 1A Component Database: Complete
+- Stage 1B Adventure Assembly: Complete
+- Stage 1C Host Secrets: Complete
+- Stage 1D Component Library: Complete
+- Stage 2A Text Import: Complete
+- Stage 2B URL-Assisted Import: Complete with GitHub Pages/CORS fallback
+- Stage 2B.1 Extraction Upgrade: Complete
+- Stage 2B.2 Import Quality Filtering: Current patch
 
-### Important URL Import Note
+## Suggested test
 
-Because this version runs as a static GitHub Pages app, many websites will block direct browser fetching through CORS. This patch still implements the Stage 2B workflow safely:
-
-1. Paste a URL.
-2. App attempts to fetch it.
-3. If blocked, app explains why.
-4. User can paste page text into the fallback importer.
-5. Extracted candidates can be reviewed and imported into the component library.
-
-A future backend version can replace this with server-side URL fetching.
-
-
-## v0.26.05.30.0006 - Stage 2 Import Extraction Upgrade
-
-This patch rolls the Clam Island import test findings into the roadmap direction:
-
-- URL import remains URL-assisted on GitHub Pages because many sites block browser fetch/CORS.
-- Pasted adventure text import is now the primary reliable path until a backend importer exists.
-- Extractor upgraded to recognize:
-  - numbered adventure headings and questlines
-  - towns, villages, shops, taverns, temples, offices, and dungeons as locations
-  - factions described in prose
-  - NPC parenthetical lines and "run by" service-owner lines
-  - encounter blocks with environments and monsters
-  - traps and complications
-  - rewards and item blocks
-  - clue/twist keywords such as maps, wanted posters, sigils, secrets, and hidden truths
-- Candidate preview is now grouped by component type with category-select buttons.
-
-Roadmap/Bible note: This is a Stage 2A/2B quality patch, not a new stage. It improves the Adventure Import System before PDF import or Host Mode expansion.
+Paste the Clam Island source text into the importer. The parser should still find useful hooks like “Defeat Bonecrushers” and “Defeat Cursed Club Clan,” while generic labels like “Main quest,” “MAINQUEST LINES,” and “Quest ideas” should be low confidence and left unselected by default.
