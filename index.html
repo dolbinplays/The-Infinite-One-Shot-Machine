@@ -8,7 +8,7 @@
 :root{--bg:#100d18;--panel:#191426;--panel2:#231b33;--ink:#f6efff;--muted:#b9aeca;--accent:#b87cff;--accent2:#6ee7d8;--bad:#ff6b8a;--good:#9dffb0;--warn:#ffd36e;--border:#3b2b55}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(circle at top,#2b1742 0,#100d18 45%,#09070d 100%);color:var(--ink)}header{padding:22px 24px;border-bottom:1px solid var(--border);background:rgba(16,13,24,.86);position:sticky;top:0;z-index:5;backdrop-filter:blur(8px)}h1{margin:0;font-size:clamp(1.5rem,3vw,2.4rem)}.sub{color:var(--muted);margin-top:6px}.version{display:inline-block;margin-top:8px;padding:4px 9px;border:1px solid var(--border);border-radius:999px;color:var(--accent2);font-size:.85rem}.wrap{max-width:1220px;margin:0 auto;padding:20px}.grid{display:grid;grid-template-columns:1fr;gap:16px}@media(min-width:900px){.grid.two{grid-template-columns:1.1fr .9fr}.grid.three{grid-template-columns:repeat(3,1fr)}}.card{background:linear-gradient(180deg,var(--panel),#120e1c);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 14px 45px rgba(0,0,0,.26)}h2,h3{margin-top:0}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}button,select,input,textarea{font:inherit}button{background:linear-gradient(180deg,#9d61ff,#6f3bc8);color:white;border:0;border-radius:12px;padding:10px 13px;cursor:pointer;font-weight:700}button.secondary{background:#2b2140;color:var(--ink);border:1px solid var(--border)}button.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}button.bad{background:#7d2238}button.good{background:#257143}button:disabled{opacity:.55;cursor:not-allowed}select,input,textarea{width:100%;background:#0d0a14;color:var(--ink);border:1px solid var(--border);border-radius:12px;padding:10px}textarea{min-height:120px;resize:vertical}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}.tab{background:#1c152a;border:1px solid var(--border);color:var(--muted)}.tab.active{background:linear-gradient(180deg,#6f3bc8,#442478);color:white}.hidden{display:none}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:#211830;border-radius:999px;padding:5px 9px;color:var(--muted);font-size:.85rem;margin:3px}.list{display:grid;gap:10px}.item{border:1px solid var(--border);background:#110d19;border-radius:14px;padding:12px}.item strong{color:var(--accent2)}.small{font-size:.88rem;color:var(--muted)}.secret{border-left:4px solid var(--accent);padding-left:12px}.player{border-left:4px solid var(--accent2);padding-left:12px}.danger{color:var(--bad)}.ok{color:var(--good)}.warn{color:var(--warn)}pre{white-space:pre-wrap;background:#0c0912;border:1px solid var(--border);padding:12px;border-radius:14px;max-height:360px;overflow:auto}.counts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}@media(min-width:700px){.counts{grid-template-columns:repeat(4,1fr)}}.count{background:#100c18;border:1px solid var(--border);padding:10px;border-radius:12px}.count b{display:block;color:var(--accent2);font-size:1.25rem}.candidate{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}.candidate input{width:auto;margin-top:4px}.confidence{display:inline-block;border-radius:999px;padding:2px 8px;font-size:.78rem;margin-left:6px;border:1px solid var(--border)}.confidence.high{color:var(--good);border-color:#3e8f55}.confidence.medium{color:var(--warn);border-color:#8f7a3e}.confidence.low{color:var(--bad);border-color:#8f3e55}.rejected{opacity:.62;border-style:dashed}.scene{margin-bottom:12px}.log{max-height:330px;overflow:auto}.logline{font-size:.9rem;color:var(--muted);padding:7px 0;border-bottom:1px dashed #35264d}.footer{color:var(--muted);text-align:center;padding:28px}</style>
 </head>
 <body>
-<header><h1>∞ The Infinite One-Shot Machine</h1><div class="sub">Web-first Virtual DM platform · Stage 2 Import Quality Pass</div><div class="version">v0.26.05.30.0008</div></header>
+<header><h1>∞ The Infinite One-Shot Machine</h1><div class="sub">Web-first Virtual DM platform · Stage 2B.4 Import Commit Hotfix</div><div class="version">v0.26.05.30.0009</div></header>
 <div class="wrap">
  <div class="tabs">
   <button class="tab active" data-tab="generate">Generate</button><button class="tab" data-tab="host">Host Mode</button><button class="tab" data-tab="library">Component Library</button><button class="tab" data-tab="importer">Import</button><button class="tab" data-tab="health">Build Health</button>
@@ -24,7 +24,7 @@
  <div class="footer">The Infinite One-Shot Machine · Build for GitHub Pages</div>
 </div>
 <script>
-const VERSION='v0.26.05.30.0008';
+const VERSION='v0.26.05.30.0009';
 const TYPES=['hooks','villains','npcs','factions','locations','encounters','clues','secrets','twists','rewards','complications','finales'];
 const DEFAULTS={
  hooks:['A caravan vanishes on a road everyone swears is safe.','A child returns from the woods speaking with an ancient voice.','A noble hires the party to recover a stolen relic before dawn.','A village festival is interrupted by impossible bells beneath the earth.','A lighthouse shines inland instead of out to sea.'],
@@ -40,7 +40,25 @@ const DEFAULTS={
  complications:['a storm traps everyone together','an ally panics and reveals a secret early','the villain offers a morally tempting bargain','the local authorities arrest the wrong suspect','the ritual clock advances whenever blood is spilled'],
  finales:['a confrontation beneath the old chapel bell','a desperate negotiation during the midnight ritual','a battle on a collapsing bridge over black water','a choice between saving one innocent or exposing the entire conspiracy','a chase into a room that exists only during moonlight']
 };
-let library=JSON.parse(localStorage.getItem('iosm_library')||'null')||structuredClone(DEFAULTS);
+function normalizeLibrary(raw){
+ const base=structuredClone(DEFAULTS);
+ const singularToPlural={hook:'hooks',villain:'villains',npc:'npcs',faction:'factions',location:'locations',encounter:'encounters',clue:'clues',secret:'secrets',twist:'twists',reward:'rewards',complication:'complications',finale:'finales'};
+ const out={};
+ TYPES.forEach(t=>out[t]=Array.isArray(base[t])?[...base[t]]:[]);
+ if(raw && typeof raw==='object'){
+   // Import/migrate plural keys from current builds.
+   TYPES.forEach(t=>{ if(Array.isArray(raw[t])) out[t]=[...raw[t]]; });
+   // Import/migrate singular keys from older builds.
+   Object.entries(singularToPlural).forEach(([singular,plural])=>{
+     if(Array.isArray(raw[singular])) out[plural]=[...raw[singular]];
+   });
+ }
+ // Guarantee every expected array exists, even after malformed imports.
+ TYPES.forEach(t=>{ if(!Array.isArray(out[t])) out[t]=[]; });
+ return out;
+}
+let library=normalizeLibrary(JSON.parse(localStorage.getItem('iosm_library')||'null'));
+localStorage.setItem('iosm_library',JSON.stringify(library));
 let current=null, sceneIndex=0, log=[]; let candidates=[];
 function pick(a){return a[Math.floor(Math.random()*a.length)]||''}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
@@ -127,8 +145,8 @@ function extract(text){
  // 3) Factions described as "Name is..." under faction sections.
  for(const line of lines){
    let m=line.match(/^([A-Z][A-Za-z'’\- ]{2,55})\s+is\s+(?:a|an|large|group|one|the)?\s*(.{8,180})$/);
-   if(m && /^Defeat/i.test(m[1])) { addCandidate(found,seen,'hooks',m[1].trim(),'questline statement'); continue; }
-   if(m && /(faction|pirate|goblin|mercenar|law|order|monster|network|group|clan|justice|government|vassal)/i.test(line) && !/(office|ship|tavern|inn|shop|marketplace|barracks|townhall|temple)/i.test(m[1])) addCandidate(found,seen,'factions',`${m[1].trim()} — ${m[2].trim()}`,'faction description');
+   if(m && /^Defeat\b/i.test(m[1])) { addCandidate(found,seen,'hooks',m[1].trim(),'questline statement'); continue; }
+   if(m && /(faction|pirate|goblin|mercenar|law|order|monster|network|group|clan|justice|government|vassal)/i.test(line) && !/(office|ship|tavern|inn|shop|marketplace|barracks|townhall|temple)\b/i.test(m[1])) addCandidate(found,seen,'factions',`${m[1].trim()} — ${m[2].trim()}`,'faction description');
  }
  // 4) Towns, villages, named locations, and local services.
  for(const line of lines){
@@ -192,7 +210,11 @@ function acceptCandidates(){
      const txtEl=document.querySelector(`textarea[data-candtext="${i}"]`);
      const txt=(txtEl?txtEl.value:'').trim();
      if(!cand || !txt){skipped++; return;}
-     if(!library[cand.type]){errors.push(`Unknown type ${cand.type}`); return;}
+     if(!library[cand.type]){
+       // Self-heal older localStorage/library objects that may be missing plural keys.
+       if(TYPES.includes(cand.type)) library[cand.type]=[];
+       else {errors.push(`Unknown type ${cand.type}`); return;}
+     }
      if(library[cand.type].some(x=>String(x).trim().toLowerCase()===txt.toLowerCase())){skipped++; return;}
      library[cand.type].push(txt); n++;
    });
@@ -206,7 +228,7 @@ function acceptCandidates(){
    console.error(err);
  }
 }
-function runHealth(){const checks=[['Version visible',VERSION==='v0.26.05.30.0008'],['Stage 0 foundation complete',true],['Stage 1A component database',TYPES.every(t=>library[t]&&library[t].length>=0)],['Stage 1B adventure assembly',!!document.getElementById('generateBtn')],['Stage 1C host secrets',!!document.getElementById('hostOut')],['Stage 1D component editor',!!document.getElementById('addCompBtn')],['Stage 2A text import',!!document.getElementById('extractBtn')],['Stage 2B URL import attempt',!!document.getElementById('fetchUrlBtn')],['URL import fallback present',!!document.getElementById('importText')],['Stage 2 Import extraction upgrade',typeof extract==='function'],['Grouped candidate preview',typeof candidateSummary==='function'],['Stage 2B.2 import quality filtering',typeof scoreCandidate==='function'],['Stage 2B.3 import commit/status fix',!!document.getElementById('importStatus')],['Confidence scoring available',typeof selectConfidence==='function'],['Generic heading blacklist available',typeof isGenericCandidate==='function'],['Local save/load available',true]]; healthOut.innerHTML=checks.map(([n,ok])=>`<div class="item"><span class="${ok?'ok':'danger'}">${ok?'✓':'✕'}</span> ${n}</div>`).join('');}
+function runHealth(){const checks=[['Version visible',VERSION==='v0.26.05.30.0009'],['Stage 0 foundation complete',true],['Stage 1A component database',TYPES.every(t=>library[t]&&library[t].length>=0)],['Stage 1B adventure assembly',!!document.getElementById('generateBtn')],['Stage 1C host secrets',!!document.getElementById('hostOut')],['Stage 1D component editor',!!document.getElementById('addCompBtn')],['Stage 2A text import',!!document.getElementById('extractBtn')],['Stage 2B URL import attempt',!!document.getElementById('fetchUrlBtn')],['URL import fallback present',!!document.getElementById('importText')],['Stage 2 Import extraction upgrade',typeof extract==='function'],['Grouped candidate preview',typeof candidateSummary==='function'],['Stage 2B.2 import quality filtering',typeof scoreCandidate==='function'],['Stage 2B.3 import commit/status fix',!!document.getElementById('importStatus')],['Stage 2B.4 library key migration hotfix',TYPES.every(t=>Array.isArray(library[t]))],['Confidence scoring available',typeof selectConfidence==='function'],['Generic heading blacklist available',typeof isGenericCandidate==='function'],['Local save/load available',true]]; healthOut.innerHTML=checks.map(([n,ok])=>`<div class="item"><span class="${ok?'ok':'danger'}">${ok?'✓':'✕'}</span> ${n}</div>`).join('');}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.tabpage').forEach(p=>p.classList.add('hidden'));document.getElementById(b.dataset.tab).classList.remove('hidden'); if(b.dataset.tab==='health')runHealth();});
 generateBtn.onclick=generate; nextSceneBtn.onclick=()=>{if(!current)return;sceneIndex=Math.min(sceneIndex+1,current.scenes.length-1);log.push(`Advanced to scene ${sceneIndex+1}.`);renderScene();renderLog();}; revealClueBtn.onclick=()=>{if(!current)return;const c=current.clues[Math.min(sceneIndex,current.clues.length-1)]||pick(current.clues);log.push(`Revealed clue: ${c}`);renderLog();}; addNoteBtn.onclick=()=>{if(noteText.value.trim()){log.push('Note: '+noteText.value.trim());noteText.value='';renderLog();}}; speakBtn.onclick=()=>{if(!current)return; const u=new SpeechSynthesisUtterance(current.scenes[sceneIndex]); speechSynthesis.speak(u);}; saveBtn.onclick=()=>{localStorage.setItem('iosm_session',JSON.stringify({current,sceneIndex,log}));localStorage.setItem('iosm_library',JSON.stringify(library));alert('Saved locally.');}; loadBtn.onclick=()=>{const s=JSON.parse(localStorage.getItem('iosm_session')||'null'); if(s){current=s.current;sceneIndex=s.sceneIndex||0;log=s.log||[];renderAdventure();renderScene();renderLog();}else alert('No local session found.');}; exportAdventureBtn.onclick=()=>current&&download(`infinite-one-shot-${VERSION}.json`,current); addCompBtn.onclick=addComp; compType.onchange=renderLib; exportLibBtn.onclick=()=>download(`iosm-component-library-${VERSION}.json`,library); importLibFile.onchange=e=>{const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{try{library=JSON.parse(r.result); saveLib(); alert('Library imported.')}catch(err){alert('Invalid JSON.')}}; r.readAsText(f);}; resetLibBtn.onclick=()=>{if(confirm('Reset component library to defaults?')){library=structuredClone(DEFAULTS);saveLib();}}; extractBtn.onclick=()=>{candidates=extract(importText.value);renderCandidates();}; acceptCandidatesBtn.onclick=acceptCandidates; selectAllCandidatesBtn.onclick=()=>document.querySelectorAll('[data-cand]').forEach(x=>x.checked=true); clearCandidatesBtn.onclick=()=>document.querySelectorAll('[data-cand]').forEach(x=>x.checked=false); fetchUrlBtn.onclick=attemptFetch; demoUrlBtn.onclick=loadDemo;
 renderCounts();renderLib();runHealth();generate();
