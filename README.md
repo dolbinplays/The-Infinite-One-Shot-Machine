@@ -1,36 +1,32 @@
 # The Infinite One-Shot Machine
 
-Version: v0.26.05.30.0004  
-Stage: 2A — Adventure Text Import
+Version: v0.26.05.30.0005
 
-## What changed
+## Stage 2B URL Import Patch
 
-This patch advances the project beyond Stage 1D into the first Stage 2 importer milestone.
+This build advances the roadmap from Stage 2A Text Import to Stage 2B URL Import.
 
-Implemented:
+### Included
 
-- Classified adventure text importer
-- Paste notes/public summaries and analyze them into candidate components
-- Local heuristic classification into hooks, villains, NPCs, locations, encounters, clues, secrets, twists, rewards, complications, and finales
-- Per-candidate review/type dropdown before approval
-- Approve one candidate at a time
-- Approve all candidates at once
-- URL reference handling as a Stage 2B/2C placeholder
-- Approved imported text is saved into the editable component library
-- Build Health updated through Stage 2A
+- GitHub Pages-ready single-file app
+- Adventure Remix Engine
+- Host Mode with host-only secrets
+- Component Library editor
+- JSON import/export
+- Text importer
+- URL import attempt
+- URL import fallback for CORS-blocked pages
+- Candidate review/approval flow
+- Build Health panel
 
-## Upload instructions
+### Important URL Import Note
 
-Upload `index.html` and this `README.md` to the root of the GitHub repository.
+Because this version runs as a static GitHub Pages app, many websites will block direct browser fetching through CORS. This patch still implements the Stage 2B workflow safely:
 
-## Suggested success checks
+1. Paste a URL.
+2. App attempts to fetch it.
+3. If blocked, app explains why.
+4. User can paste page text into the fallback importer.
+5. Extracted candidates can be reviewed and imported into the component library.
 
-1. Confirm the version badge shows v0.26.05.30.0004.
-2. Paste a paragraph of adventure notes into the importer and click Analyze Text.
-3. Confirm multiple candidates appear with component type dropdowns.
-4. Approve one candidate and confirm the component library count increases.
-5. Approve all candidates and confirm the library updates.
-6. Generate adventures and confirm imported components can appear.
-7. Paste a URL and confirm it is handled as a source/reference candidate without breaking.
-8. Confirm existing Stage 1D add/edit/delete/import/export still works.
-9. Confirm Build Health shows Stage 2A implemented.
+A future backend version can replace this with server-side URL fetching.
