@@ -1,10 +1,10 @@
 # The Infinite One-Shot Machine
 
-Version: v0.26.05.30.0005
+Version: v0.26.05.30.0006
 
-## Stage 2B URL Import Patch
+## Stage 2 Import Extraction Upgrade Patch
 
-This build advances the roadmap from Stage 2A Text Import to Stage 2B URL Import.
+This build advances the roadmap from Stage 2A Text Import to Stage 2 Import Extraction Upgrade.
 
 ### Included
 
@@ -30,3 +30,23 @@ Because this version runs as a static GitHub Pages app, many websites will block
 5. Extracted candidates can be reviewed and imported into the component library.
 
 A future backend version can replace this with server-side URL fetching.
+
+
+## v0.26.05.30.0006 - Stage 2 Import Extraction Upgrade
+
+This patch rolls the Clam Island import test findings into the roadmap direction:
+
+- URL import remains URL-assisted on GitHub Pages because many sites block browser fetch/CORS.
+- Pasted adventure text import is now the primary reliable path until a backend importer exists.
+- Extractor upgraded to recognize:
+  - numbered adventure headings and questlines
+  - towns, villages, shops, taverns, temples, offices, and dungeons as locations
+  - factions described in prose
+  - NPC parenthetical lines and "run by" service-owner lines
+  - encounter blocks with environments and monsters
+  - traps and complications
+  - rewards and item blocks
+  - clue/twist keywords such as maps, wanted posters, sigils, secrets, and hidden truths
+- Candidate preview is now grouped by component type with category-select buttons.
+
+Roadmap/Bible note: This is a Stage 2A/2B quality patch, not a new stage. It improves the Adventure Import System before PDF import or Host Mode expansion.
