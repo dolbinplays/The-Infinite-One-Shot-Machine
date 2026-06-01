@@ -19,12 +19,12 @@
  </section>
  <section id="host" class="tabpage hidden"><div class="grid two"><div class="card"><h2>Host Dashboard</h2><div class="row"><button id="speakBtn">Speak Current Scene</button><button class="secondary" id="nextSceneBtn">Advance Scene</button><button class="ghost" id="revealClueBtn">Reveal Clue</button></div><div id="sceneOut" style="margin-top:14px"></div><h3>Session Note</h3><textarea id="noteText" placeholder="Add a note about player choices..."></textarea><button class="secondary" id="addNoteBtn">Add Note</button></div><div class="card"><h2>Session Log</h2><div id="log" class="log"></div></div></div></section>
  <section id="library" class="tabpage hidden"><div class="grid two"><div class="card"><h2>Component Editor</h2><label>Type<select id="compType"></select></label><label>Text<textarea id="compText" placeholder="Enter component text..."></textarea></label><div class="row"><button id="addCompBtn">Add Component</button><button class="secondary" id="exportLibBtn">Export Library</button><label class="secondary" style="padding:10px 13px;border-radius:12px;cursor:pointer">Import Library JSON<input id="importLibFile" type="file" accept="application/json" style="display:none"></label><button class="bad" id="resetLibBtn">Reset Defaults</button></div></div><div class="card"><h2>Current Components</h2><div id="libList" class="list"></div></div></div></section>
- <section id="importer" class="tabpage hidden"><div class="grid two"><div class="card"><h2>Stage 2 Importer</h2><h3>URL Import</h3><input id="urlInput" placeholder="https://example.com/free-adventure-page" /><div class="row" style="margin-top:10px"><button id="fetchUrlBtn">Attempt URL Fetch</button><button class="secondary" id="demoUrlBtn">Load Demo URL Result</button></div><p class="small">Static GitHub Pages apps may be blocked by CORS. If fetch is blocked, copy/paste page text below and use the same extractor.</p><div id="urlStatus" class="small"></div><h3>Text / Fallback Import</h3><textarea id="importText" placeholder="Paste adventure text or fetched page text here. Labels like Hook:, Villain:, Location:, NPC:, Encounter:, Clue:, Secret:, Twist:, Reward: work best."></textarea><div class="row"><button id="extractBtn">Extract Candidates</button><button class="secondary" id="acceptCandidatesBtn">Import Selected Candidates</button><button class="ghost" id="selectAllCandidatesBtn">Select All</button><button class="ghost" id="clearCandidatesBtn">Clear Selection</button></div></div><div class="card"><h2>Candidate Components</h2><div id="candidates" class="list"><p class="small">No candidates yet.</p></div></div></div></section>
+ <section id="importer" class="tabpage hidden"><div class="grid two"><div class="card"><h2>Stage 2 Importer</h2><h3>URL Import</h3><input id="urlInput" placeholder="https://example.com/free-adventure-page" /><div class="row" style="margin-top:10px"><button id="fetchUrlBtn">Attempt URL Fetch</button><button class="secondary" id="demoUrlBtn">Load Demo URL Result</button></div><p class="small">Static GitHub Pages apps may be blocked by CORS. If fetch is blocked, copy/paste page text below and use the same extractor.</p><div id="urlStatus" class="small"></div><h3>Text / Fallback Import</h3><textarea id="importText" placeholder="Paste adventure text or fetched page text here. Labels like Hook:, Villain:, Location:, NPC:, Encounter:, Clue:, Secret:, Twist:, Reward: work best."></textarea><div class="row"><button id="extractBtn">Extract Candidates</button><button class="secondary" id="acceptCandidatesBtn">Import Selected Candidates</button><button class="ghost" id="selectAllCandidatesBtn">Select All</button><button class="ghost" id="clearCandidatesBtn">Clear Selection</button></div><div id="importStatus" class="small" style="margin-top:10px"></div></div><div class="card"><h2>Candidate Components</h2><div id="candidates" class="list"><p class="small">No candidates yet.</p></div></div></div></section>
  <section id="health" class="tabpage hidden"><div class="card"><h2>Build Health</h2><div id="healthOut"></div></div></section>
  <div class="footer">The Infinite One-Shot Machine · Build for GitHub Pages</div>
 </div>
 <script>
-const VERSION='v0.26.05.30.0007';
+const VERSION='v0.26.05.30.0008';
 const TYPES=['hooks','villains','npcs','factions','locations','encounters','clues','secrets','twists','rewards','complications','finales'];
 const DEFAULTS={
  hooks:['A caravan vanishes on a road everyone swears is safe.','A child returns from the woods speaking with an ancient voice.','A noble hires the party to recover a stolen relic before dawn.','A village festival is interrupted by impossible bells beneath the earth.','A lighthouse shines inland instead of out to sea.'],
@@ -60,18 +60,24 @@ const GENERIC_HEADING_RE=/^(main\s*quest|mainquest\s*lines?|quest\s*ideas?|event
 const TOO_GENERIC_RE=/^(chapter\s*\d+|level\s*\d+|first room|second room|third room|fourth room|fifth room|sixth room|seventh room|eighth room|ninth room|tenth room|entrance|reward|items|total xp|environment)$/i;
 function isGenericCandidate(text){ const t=cleanCandidateText(text,120).toLowerCase().replace(/[:.]+$/,'').trim(); return GENERIC_HEADING_RE.test(t)||TOO_GENERIC_RE.test(t)||t.length<5; }
 function scoreCandidate(type,text,source=''){
- const t=cleanCandidateText(text,240); const low=t.toLowerCase(); let score=50; let reasons=[];
+ const t=cleanCandidateText(text,300); const low=t.toLowerCase(); let score=50; let reasons=[];
  if(source==='explicit label'){score+=30;reasons.push('explicit label')}
- if(/defeat|rescue|investigate|deliver|search|protect|kill|raid|training battle|defense of|lost temple|wanted|missing/i.test(t)){score+=25;reasons.push('actionable quest')}
+ if(source==='environment'){score-=30;reasons.push('terrain/environment only')}
+ if(/defeat|rescue|investigate|deliver|search|protect|kill|raid|training battle|defense of|lost temple|wanted|missing|collect|escort|smuggle|help\b/i.test(t)){score+=25;reasons.push('actionable quest')}
  if(/\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+\b/.test(t)){score+=10;reasons.push('named entity')}
- if(type==='npcs' && /\((human|orc|elf|halfling|lizardfolk|dwarf|male|female|officer|wizard|cleric|paladin|shopkeeper|fisherman|pirate)/i.test(t)){score+=25;reasons.push('npc descriptor')}
+ if(type==='npcs' && /\((human|orc|elf|halfling|lizardfolk|dwarf|male|female|officer|wizard|cleric|paladin|shopkeeper|fisherman|pirate|butcher|vendor|sailor|guard|healer|cleric)/i.test(t)){score+=25;reasons.push('npc descriptor')}
  if(type==='factions' && /pirate|goblin|mercenar|justice|clan|house|defenders|network|group/i.test(t)){score+=20;reasons.push('faction words')}
- if(type==='locations' && /town|village|island|cave|warehouse|castle|mine|temple|market|tavern|inn|shop|jungle|beach|sea|harbor|road|ruins|cove/i.test(t)){score+=18;reasons.push('location words')}
- if(type==='encounters' && /combat|challenge|ambush|trap|beast|humanoid|pirate|goblin|guard|crab|frog|crocodile|dinosaur/i.test(t)){score+=18;reasons.push('encounter words')}
+ if(type==='locations' && /town|village|island|cave|warehouse|castle|mine|temple|market|tavern|inn|shop|jungle|beach|sea|harbor|road|ruins|cove|office|barracks|ship|dungeon/i.test(t)){score+=18;reasons.push('location words')}
+ if(type==='encounters' && /combat|challenge|ambush|trap|beast|humanoid|pirate|goblin|guard|crab|frog|crocodile|dinosaur|lizard|piranha|octopus/i.test(t)){score+=18;reasons.push('encounter words')}
  if(type==='rewards' && /gold|gp|coin|potion|reward|item|treasure|key|sigil/i.test(t)){score+=18;reasons.push('reward words')}
- if(isGenericCandidate(t)){score-=55;reasons.push('generic heading')}
- if(/^main\s*quest/i.test(t)||/^quest\s*ideas/i.test(t)||/^mainquest\s*lines/i.test(t)){score-=80;reasons.push('organizational heading')}
- if(t.split(/\s+/).length<=2 && !/defeat|rescue|deliver|silverpearl|bonecrushers|cursed club/i.test(low)){score-=20;reasons.push('very short')}
+ if(type==='complications' && /trap|ambush|surprised|hiding|perception|dc\s*\d+|pressure plate|pitfall|boulder|restrained/i.test(t)){score+=18;reasons.push('hazard words')}
+ if(isGenericCandidate(t)){score-=70;reasons.push('generic heading')}
+ if(/^main\s*quest/i.test(t)||/^quest\s*ideas/i.test(t)||/^mainquest\s*lines/i.test(t)){score-=90;reasons.push('organizational heading')}
+ if(/^(roll|if |when |for |total xp|challenge rating|environment:|items:|reward:|actions|languages|senses|armor class|hit points|speed)\b/i.test(t)){score-=35;reasons.push('mechanical/procedural text')}
+ if(type==='factions' && /(office|ship|tavern|inn|shop|marketplace|barracks|townhall|temple)\b/i.test(t)){score-=25;reasons.push('probably a place, not faction')}
+ if(type==='locations' && /^(deliver|find|protect|search|investigate|kill|help|collect|smuggle|threaten|poison|raid|burn|pickpocket|destroy)\b/i.test(t)){score-=60;reasons.push('quest action, not location')}
+ if(type==='twists' && /(roll perception|dc\s*\d+|ambush|surprised|hiding in a bush|crocodile is hiding)/i.test(t)){score-=45;reasons.push('hazard, not twist')}
+ if(t.split(/\s+/).length<=2 && !/defeat|rescue|deliver|silverpearl|bonecrushers|cursed club/i.test(low)){score-=25;reasons.push('very short')}
  const confidence=score>=75?'high':score>=45?'medium':'low';
  return {score,confidence,reasons};
 }
@@ -112,16 +118,17 @@ function extract(text){
  for(let i=0;i<lines.length;i++){
    const m=lines[i].match(headingRe); if(!m) continue;
    const title=m[2].trim(); const lower=title.toLowerCase();
-   if(isGenericCandidate(title)) { addCandidate(found,seen,'hooks',title,'rejected generic heading'); continue; }
+   if(isGenericCandidate(title)) { continue; }
    if(/defeat|rescue|investigate|deliver|search|protect|look for|kill|raid|collect|training battle|wanted|lost temple|coastal cave|raptor|fishing nets|mushroom cave|overgrown ruins|cave behind waterfall/.test(lower)) addCandidate(found,seen,'hooks',title,'numbered heading');
-   if(/warehouse|cave|castle|mine|temple|ruins|cove|village|town|island|harbor|market|tavern|inn|shop|barracks|office|dungeon|road|jungle|beach|sea|silverpearl|whitestrand|blackhollow/.test(lower)) addCandidate(found,seen,'locations',title,'numbered heading');
+   if(!/^(deliver|find|protect|search|investigate|kill|help|collect|smuggle|threaten|poison|raid|burn|pickpocket|destroy)\b/.test(lower) && /warehouse|cave|castle|mine|temple|ruins|cove|village|town|island|harbor|market|tavern|inn|shop|barracks|office|dungeon|road|jungle|beach|sea|silverpearl|whitestrand|blackhollow/.test(lower)) addCandidate(found,seen,'locations',title,'numbered heading');
    if(/encounter|combat|trap|ambush|training battle|defense|events?,\s*(beach|jungle|road|sea|silverpearl)/.test(lower)) addCandidate(found,seen,'encounters',title,'numbered heading');
    if(/finale|boss|captain|cove in north|cave in north/.test(lower)) addCandidate(found,seen,'finales',title,'numbered heading');
  }
  // 3) Factions described as "Name is..." under faction sections.
  for(const line of lines){
-   let m=line.match(/^([A-Z][A-Za-z'’\- ]{2,45})\s+is\s+(?:a|an|large|group|one|the)?\s*(.{8,180})$/);
-   if(m && /(faction|pirate|goblin|mercenar|law|order|monster|network|group|clan|justice|government|vassal)/i.test(line)) addCandidate(found,seen,'factions',`${m[1].trim()} — ${m[2].trim()}`,'faction description');
+   let m=line.match(/^([A-Z][A-Za-z'’\- ]{2,55})\s+is\s+(?:a|an|large|group|one|the)?\s*(.{8,180})$/);
+   if(m && /^Defeat/i.test(m[1])) { addCandidate(found,seen,'hooks',m[1].trim(),'questline statement'); continue; }
+   if(m && /(faction|pirate|goblin|mercenar|law|order|monster|network|group|clan|justice|government|vassal)/i.test(line) && !/(office|ship|tavern|inn|shop|marketplace|barracks|townhall|temple)/i.test(m[1])) addCandidate(found,seen,'factions',`${m[1].trim()} — ${m[2].trim()}`,'faction description');
  }
  // 4) Towns, villages, named locations, and local services.
  for(const line of lines){
@@ -131,6 +138,7 @@ function extract(text){
  }
  // 5) NPC patterns: Name (descriptor) does/runs/sells/offers/asks/etc.
  for(const line of lines){
+   if(/^(Roll|If|When|For|Environment|Challenge|Total|Combat|Actions|Languages|Senses|Armor Class|Hit Points|Speed)\b/i.test(line)) continue;
    let m=line.match(/^([A-Z][A-Za-z'’\-]+(?:\s+[A-Z][A-Za-z'’\-]+){0,3})\s*\(([^)]{3,80})\)\s*(.+)?$/);
    if(m){
      const tail=(m[3]||'').trim();
@@ -151,8 +159,9 @@ function extract(text){
    const line=lines[i];
    if(/^Reward\s*:/i.test(line)) addCandidate(found,seen,'rewards',(lines[i+1]&&/^\d|[A-Z]/.test(lines[i+1]))?`Reward: ${lines[i+1]}`:line,'reward block');
    if(/^Items\s*:/i.test(line)){ const next=[]; for(let j=i+1;j<Math.min(lines.length,i+6);j++){ if(/^(\d+\s*x|\d+d\d+|[A-Z].*coin|Potion|Sigil|Chest key|.+\(.*gp\))/i.test(lines[j])) next.push(lines[j]); } if(next.length) addCandidate(found,seen,'rewards',`Items: ${next.join('; ')}`,'items block'); }
-   if(/map|letter|symbol|sigil|wanted|poster|old map|carved text|painting|chalice|key/i.test(line)) addCandidate(found,seen,'clues',line,'clue keyword');
-   if(/secret|secretly|actually|truth|betray|not evil|joined willingly|hiding/i.test(line)) addCandidate(found,seen,'twists',line,'twist keyword');
+   if(!/^Environment\s*:/i.test(line) && /map|letter|symbol|sigil|wanted|poster|old map|carved text|painting|chalice|key/i.test(line)) addCandidate(found,seen,'clues',line,'clue keyword');
+   if(/roll perception|dc\s*\d+|ambush|surprised|hiding in a bush|crocodile is hiding/i.test(line)) addCandidate(found,seen,'complications',line,'hazard clue');
+   else if(/secret|secretly|actually|truth|betray|not evil|joined willingly|hiding/i.test(line)) addCandidate(found,seen,'twists',line,'twist keyword');
  }
  // 8) Sort by type then confidence/score; cap each type but keep low-confidence review visible.
  const typeRank=Object.fromEntries(TYPES.map((t,i)=>[t,i]));
@@ -173,8 +182,31 @@ window.selectCandidateType=(type,val)=>{candidates.forEach((c,i)=>{if(c.type===t
 window.selectConfidence=(confidence,val)=>{candidates.forEach((c,i)=>{if(c.confidence===confidence){const box=document.querySelector(`[data-cand="${i}"]`); if(box) box.checked=val;}})};
 async function attemptFetch(){const url=urlInput.value.trim(); if(!url){urlStatus.innerHTML='<span class="warn">Enter a URL first.</span>';return;} urlStatus.textContent='Attempting browser fetch...'; try{let res=await fetch(url,{mode:'cors'}); if(!res.ok) throw new Error('HTTP '+res.status); let txt=await res.text(); let stripped=txt.replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); importText.value=stripped.slice(0,20000); candidates=extract(importText.value); renderCandidates(); urlStatus.innerHTML=`<span class="ok">Fetched ${stripped.length} characters. Review candidates before import.</span>`; }catch(e){ urlStatus.innerHTML=`<span class="warn">Browser fetch was blocked or failed: ${e.message}. This is common on GitHub Pages because many sites block cross-origin access. Paste the page text below or use a future backend importer.</span>`; }}
 function loadDemo(){urlInput.value='https://example.com/free-adventure-demo'; importText.value=`Hook: A rescue party disappears while investigating bells under the old mill.\nVillain: Sister Vey, a kind healer possessed by a buried saint.\nLocation: The Old Mill over sealed catacombs.\nNPC: Tomas Reed, a frightened apprentice who heard singing from below.\nEncounter: Animated mill tools attack anyone carrying open flame.\nClue: A prayer book contains a map drawn in dried river mud.\nSecret: The saint is not evil; the village founders trapped it to hide their crime.\nTwist: The missing rescue party joined willingly after learning the truth.\nReward: A bell charm that rings when someone knowingly breaks an oath.`; candidates=extract(importText.value);renderCandidates();urlStatus.innerHTML='<span class="ok">Loaded demo URL-style content.</span>';}
-function acceptCandidates(){let n=0; document.querySelectorAll('[data-cand]').forEach(ch=>{if(ch.checked){const i=+ch.dataset.cand; const txt=document.querySelector(`[data-candtext="${i}"]`).value.trim(); if(txt){library[candidates[i].type].push(txt);n++;}}}); saveLib(); log.push(`Imported ${n} URL/text candidate components.`); renderLog(); alert(`Imported ${n} components.`)}
-function runHealth(){const checks=[['Version visible',VERSION==='v0.26.05.30.0007'],['Stage 0 foundation complete',true],['Stage 1A component database',TYPES.every(t=>library[t]&&library[t].length>=0)],['Stage 1B adventure assembly',!!document.getElementById('generateBtn')],['Stage 1C host secrets',!!document.getElementById('hostOut')],['Stage 1D component editor',!!document.getElementById('addCompBtn')],['Stage 2A text import',!!document.getElementById('extractBtn')],['Stage 2B URL import attempt',!!document.getElementById('fetchUrlBtn')],['URL import fallback present',!!document.getElementById('importText')],['Stage 2 Import extraction upgrade',typeof extract==='function'],['Grouped candidate preview',typeof candidateSummary==='function'],['Stage 2B.2 import quality filtering',typeof scoreCandidate==='function'],['Confidence scoring available',typeof selectConfidence==='function'],['Generic heading blacklist available',typeof isGenericCandidate==='function'],['Local save/load available',true]]; healthOut.innerHTML=checks.map(([n,ok])=>`<div class="item"><span class="${ok?'ok':'danger'}">${ok?'✓':'✕'}</span> ${n}</div>`).join('');}
+function acceptCandidates(){
+ const status=document.getElementById('importStatus');
+ let n=0, skipped=0, errors=[];
+ try{
+   document.querySelectorAll('input[data-cand]').forEach(ch=>{
+     if(!ch.checked) return;
+     const i=Number(ch.dataset.cand); const cand=candidates[i];
+     const txtEl=document.querySelector(`textarea[data-candtext="${i}"]`);
+     const txt=(txtEl?txtEl.value:'').trim();
+     if(!cand || !txt){skipped++; return;}
+     if(!library[cand.type]){errors.push(`Unknown type ${cand.type}`); return;}
+     if(library[cand.type].some(x=>String(x).trim().toLowerCase()===txt.toLowerCase())){skipped++; return;}
+     library[cand.type].push(txt); n++;
+   });
+   saveLib();
+   log.push(`Imported ${n} candidate components${skipped?` (${skipped} skipped/duplicates)`:''}.`);
+   renderLog();
+   if(status) status.innerHTML=`<span class="ok">Imported ${n} components.</span>${skipped?` <span class="warn">Skipped ${skipped} blank/duplicate items.</span>`:''}${errors.length?` <span class="danger">${errors.join('; ')}</span>`:''}`;
+   alert(`Imported ${n} components${skipped?`; skipped ${skipped}`:''}.`);
+ }catch(err){
+   if(status) status.innerHTML=`<span class="danger">Import failed: ${err.message}</span>`;
+   console.error(err);
+ }
+}
+function runHealth(){const checks=[['Version visible',VERSION==='v0.26.05.30.0008'],['Stage 0 foundation complete',true],['Stage 1A component database',TYPES.every(t=>library[t]&&library[t].length>=0)],['Stage 1B adventure assembly',!!document.getElementById('generateBtn')],['Stage 1C host secrets',!!document.getElementById('hostOut')],['Stage 1D component editor',!!document.getElementById('addCompBtn')],['Stage 2A text import',!!document.getElementById('extractBtn')],['Stage 2B URL import attempt',!!document.getElementById('fetchUrlBtn')],['URL import fallback present',!!document.getElementById('importText')],['Stage 2 Import extraction upgrade',typeof extract==='function'],['Grouped candidate preview',typeof candidateSummary==='function'],['Stage 2B.2 import quality filtering',typeof scoreCandidate==='function'],['Stage 2B.3 import commit/status fix',!!document.getElementById('importStatus')],['Confidence scoring available',typeof selectConfidence==='function'],['Generic heading blacklist available',typeof isGenericCandidate==='function'],['Local save/load available',true]]; healthOut.innerHTML=checks.map(([n,ok])=>`<div class="item"><span class="${ok?'ok':'danger'}">${ok?'✓':'✕'}</span> ${n}</div>`).join('');}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.tabpage').forEach(p=>p.classList.add('hidden'));document.getElementById(b.dataset.tab).classList.remove('hidden'); if(b.dataset.tab==='health')runHealth();});
 generateBtn.onclick=generate; nextSceneBtn.onclick=()=>{if(!current)return;sceneIndex=Math.min(sceneIndex+1,current.scenes.length-1);log.push(`Advanced to scene ${sceneIndex+1}.`);renderScene();renderLog();}; revealClueBtn.onclick=()=>{if(!current)return;const c=current.clues[Math.min(sceneIndex,current.clues.length-1)]||pick(current.clues);log.push(`Revealed clue: ${c}`);renderLog();}; addNoteBtn.onclick=()=>{if(noteText.value.trim()){log.push('Note: '+noteText.value.trim());noteText.value='';renderLog();}}; speakBtn.onclick=()=>{if(!current)return; const u=new SpeechSynthesisUtterance(current.scenes[sceneIndex]); speechSynthesis.speak(u);}; saveBtn.onclick=()=>{localStorage.setItem('iosm_session',JSON.stringify({current,sceneIndex,log}));localStorage.setItem('iosm_library',JSON.stringify(library));alert('Saved locally.');}; loadBtn.onclick=()=>{const s=JSON.parse(localStorage.getItem('iosm_session')||'null'); if(s){current=s.current;sceneIndex=s.sceneIndex||0;log=s.log||[];renderAdventure();renderScene();renderLog();}else alert('No local session found.');}; exportAdventureBtn.onclick=()=>current&&download(`infinite-one-shot-${VERSION}.json`,current); addCompBtn.onclick=addComp; compType.onchange=renderLib; exportLibBtn.onclick=()=>download(`iosm-component-library-${VERSION}.json`,library); importLibFile.onchange=e=>{const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{try{library=JSON.parse(r.result); saveLib(); alert('Library imported.')}catch(err){alert('Invalid JSON.')}}; r.readAsText(f);}; resetLibBtn.onclick=()=>{if(confirm('Reset component library to defaults?')){library=structuredClone(DEFAULTS);saveLib();}}; extractBtn.onclick=()=>{candidates=extract(importText.value);renderCandidates();}; acceptCandidatesBtn.onclick=acceptCandidates; selectAllCandidatesBtn.onclick=()=>document.querySelectorAll('[data-cand]').forEach(x=>x.checked=true); clearCandidatesBtn.onclick=()=>document.querySelectorAll('[data-cand]').forEach(x=>x.checked=false); fetchUrlBtn.onclick=attemptFetch; demoUrlBtn.onclick=loadDemo;
 renderCounts();renderLib();runHealth();generate();
