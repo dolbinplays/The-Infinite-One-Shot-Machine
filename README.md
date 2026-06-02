@@ -1,19 +1,37 @@
 # The Infinite One-Shot Machine
 
-Version: v0.26.05.30.0009
+Version: v0.26.05.30.0010  
+Stage: 2B.5 — Library Hygiene & Source Tracking
 
-Stage 2B.4 Import Commit Hotfix
+## Patch Summary
 
-## What changed
+This patch builds on v0.26.05.30.0009 and adds source-aware component storage and library management tools.
 
-- Fixed visible version badge so it matches the internal build version.
-- Added component-library migration for older localStorage data that used singular keys.
-- Fixed the import commit path so plural candidate types like hooks, npcs, factions, locations, encounters, clues, twists, rewards, and complications are accepted.
-- Added self-healing in the import routine if expected library arrays are missing.
-- Added a Build Health check for library key normalization.
+### Included
 
-## Upload instructions
+- Source attribution for imported components
+- Source field for manual component creation
+- Import source name field for pasted/URL-assisted imports
+- Library search by component text or source
+- Source statistics panel
+- Library audit panel
+- Duplicate prevention using normalized component text
+- Migration layer for older string-only component libraries
+- Export/import support for source metadata
+- Visible version badge updated to v0.26.05.30.0010
 
-Upload `index.html` and this `README.md` to the repository root for GitHub Pages.
+## Recommended Tests
 
-After uploading, hard refresh the browser with Ctrl+F5. If import still reports unknown types, click Reset Defaults only if you are comfortable clearing local component data, or export your library first.
+1. Confirm the header version shows v0.26.05.30.0010.
+2. Import Clam Island text with source name `Clam Island`.
+3. Confirm selected candidates import successfully.
+4. Open Component Library and search `Bonecrushers`.
+5. Search `Clam Island` and confirm imported components appear.
+6. Confirm Source Statistics shows counts for Clam Island.
+7. Import the same candidates again and confirm duplicates are skipped.
+8. Export the library JSON and confirm entries include `text`, `source`, and `importedAt`.
+9. Refresh/load and confirm source metadata remains.
+
+## Roadmap Status
+
+Completed through Stage 2B.5. Next recommended milestone: Stage 2C — PDF Import, after source tracking and library hygiene are verified.
